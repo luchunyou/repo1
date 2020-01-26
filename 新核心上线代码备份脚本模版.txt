@@ -1,0 +1,63 @@
+
+说明：代码上线需要将原来的代码进行备份，若上线出现问题 可及时回退版本
+一天多个版本上线 可在日期后加上版本号
+快速备份可参考取包目录的以下文件
+patch-20191119-innermanage.txt
+patch-20191119-perbank.txt
+patch-20191119-corporbank.txt
+patch-20191119-taskman.txt
+
+新核心企业动态
+tar -cvf 20191119_01_corporbank_bak.tar \
+/ebank/corporbank_war.ear/corporbank.war/WEB-INF/bizs/corporbank/operations/010101_accountQuery.xml \
+/ebank/corporbank_war.ear/corporbank.war/WEB-INF/bizs/corporbank/operations/010201_accountDetail.xml \
+/ebank/corporbank_war.ear/corporbank.war/WEB-INF/bizs/corporbank/operations/210102_billApply.xml \
+/ebank/corporbank_war.ear/corporbank.war/WEB-INF/bizs/corporbank/operations/groupTransferQuery.xml \
+/ebank/corporbank_war.ear/corporbank.war/WEB-INF/bizs/corporbank/operations/public.xml \
+/ebank/corporbank_war.ear/corporbank.war/WEB-INF/bizs/corporbank/operations/cashDepositManage.xml \
+/ebank/corporbank_war.ear/corporbank.war/WEB-INF/bizs/corporbank/operations/cashOtherManage.xml \
+
+
+新核心企业静态
+tar -cvf 20191119_01_corporbank_http_bak.tar \
+/ebank/corporbank/corporbank/html/cashDeposit/091004_showBatch.htm \
+/ebank/corporbank/corporbank/html/cashDeposit/091007_showBatch.htm \
+/ebank/corporbank/corporbank/html/ebillNewVersion/210101_positiveNotesDetail.htm \
+/ebank/corporbank/corporbank/js/frontpage/cashDeposit/091004_cashAcceptAddQuery.js \
+/ebank/corporbank/corporbank/js/frontpage/cashDeposit/091004_showBatch.js \
+/ebank/corporbank/corporbank/js/frontpage/cashDeposit/091007_showBatch.js \
+/ebank/corporbank/corporbank/js/frontpage/collectAndPay/transfer/020100_orderList.js \
+/ebank/corporbank/corporbank/js/frontpage/cashDeposit/091007_cashAcceptOutQuery.js \
+
+
+新核心个人动态：
+tar -cvf patch-20191119_01-perbank_newUI_bak.tar \
+/ebank/perbank-newUITest_war.ear/perbank.war/WEB-INF/bizs/perbank/operations/accountQuery.xml \
+/ebank/perbank-newUITest_war.ear/perbank.war/WEB-INF/mvcs/perbank/actions/accountQuery.xml \
+
+新核心个人静态包
+tar -cvf 20191119_01_perbank_newUI_http_bak.tar \
+/ebank/perbank/perbank/js/frontpage/00070000_accountList2.js \
+/ebank/perbank/perbank/js/frontpage/00203800_theBestTreasure.js \
+/ebank/perbank/perbank/l/finacialMatters/00203800_theBestTreasure.htm \
+
+
+新核心内管：
+tar -cvf 20191119_01_innermanage_bak.tar \
+/ebank/innermanage_war.ear/innermanage.war/WEB-INF/bizs/innermanage/operations/depositBusiness.xml \
+/ebank/innermanage_war.ear/innermanage.war/WEB-INF/bizs/innermanage/operations/public.xml \
+/ebank/innermanage_war.ear/innermanage.war/WEB-INF/mvcs/innermanage/actions/creditNotification.xml \
+/ebank/innermanage_war.ear/innermanage.war/WEB-INF/mvcs/innermanage/actions/payInstruction.xml \
+/ebank/innermanage_war.ear/innermanage.war/WEB-INF/mvcs/innermanage/cashDeposit/030110_acceptRestCash_add.jsp \
+/ebank/innermanage_war.ear/innermanage.war/WEB-INF/mvcs/innermanage/cashDeposit/030110_acceptRestCash_detail.jsp \
+
+
+新核心内管静态：
+tar -cvf 20191119_01_innermanage_http_bak.tar \
+/ebank/innermanage/innermanage/scripts/Driver.js \
+
+新核心定时任务: 
+tar -cvf 20191119_01_taskman_bak.tar \
+/ebank/taskman_war.ear/taskman.war/WEB-INF/bizs/taskman/operations.xml \
+/ebank/taskman_war.ear/taskman.war/WEB-INF/bizs/taskman/operations/corporTransferDealCopy.xml \
+/ebank/taskman_war.ear/taskman.war/WEB-INF/bizs/taskman/operations/phoneTransfer.xml \

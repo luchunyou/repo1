@@ -1,0 +1,260 @@
+jenkins打版地址
+55服务打版地址： http://200.100.154.55:8080/   用户名/密码 ： admin/admin
+我的本地打版地址： http://200.100.79.115:8080   用户名/密码 ： jkadmin/jkadmin
+
+打版步骤：准备增量清单及提交代码到git-->登录打版地址-->我的视图-->选择视图（newgit为master分支;sit_newgit为SIT分支）-->点击“立即构建”开始打版-->
+构建完成无报错到对应的视图工作空间下取增量包
+master 分支库打版打完生成增量包在目录：F:\Jenkins\workspace\newgit\build\dist 共享目录：\\DESKTOP-DC0P4K9\newgit\build\dist
+SIT 分支库打版 打完生成增量包在目录：F:\Jenkins\workspace\sit_newgit\build\dist 共享目录：\\DESKTOP-DC0P4K9\sit_newgit\build\dist
+
+配置说明；
+
+	任务1-master 分支库打版：
+	newgit  ——》	master 分支库打版 打完生成增量包在目录：F:\Jenkins\workspace\newgit\build\dist 共享目录：\\DESKTOP-DC0P4K9\newgit\build\dist
+		
+	主要配置
+	视图配置：
+	1）源码管理： 选择 git ; Repository URL：http://200.100.62.47/new_corebank/04-Code/04-Outer-Systems/11-wangyin.git 及添加git用户 分支设置为 */master
+	2)构建: 选择invoke Ant ; 
+	Ant Version： ant1.10.5
+	
+	Targets：   
+	Build File： F:\Jenkins\workspace\newgit\build\patchAllBuild.xml
+	
+	Properties： 
+	buildfile=build_patch.properties
+	rootDir=F:/Jenkins/workspace/newgit
+	
+	
+	
+	任务2-SIT 分支库打版：
+	sit_newgit ——》 SIT 分支库打版 打完生成增量包在目录：F:\Jenkins\workspace\sit_newgit\build\dist 共享目录：\\DESKTOP-DC0P4K9\sit_newgit\build\dist
+	主要配置
+	视图配置：
+	1）源码管理： 选择 git ; Repository URL：http://200.100.62.47/new_corebank/04-Code/04-Outer-Systems/11-wangyin.git 及添加git用户 分支设置为 */SIT
+	2)构建: 选择invoke Ant ; 
+	Ant Version： ant1.10.5
+	Targets：   
+	Build File： F:\Jenkins\workspace\sit_newgit\build\patchAllBuild.xml
+	
+	Properties： 
+	buildfile=build_sit.properties
+	rootDir=F:/Jenkins/workspace/sit_newgit
+	
+	https://username@200.100.62.47/new_corebank/04-Code/04-Outer-Systems/11-wangyin.git
+	
+	git clone http://200.100.62.47/new_corebank/04-Code/04-Outer-Systems/11-wangyin.git
+	
+	git config –global http.sslverify false
+	ssh -T https://yuxin_lucy@200.100.62.47/new_corebank/04-Code/04-Outer-Systems/11-wangyin.git
+	
+	ssh -T git@https://200.100.62.47
+	git remote set-url origin https://yuxin_lucy@200.100.62.47/new_corebank/04-Code/04-Outer-Systems/11-wangyin.git
+	
+	配制完之后点击立即构建即可。
+	
+	patchAllBuild.xml 默认打包全部工程，单个工程打版需要设置Targets，如需要打版perbank,则设置perbank
+	
+	可打全量包，需要指定配置文件Properties： buildfile=pack_build_sit.properties
+	
+	<property name="lianaCore.java.lib" value="${java.lib}"/>
+	<property name="perbank.java.lib" value="${java.lib}"/>
+	<property name="project.patch.location" value="../build/dist" />
+	<property name="installTo" value="../build/dist" />
+	
+	F:\Jenkins\workspace\newgit\build_ant\patchAllBuild.xml
+	
+	project.patch.location=../build_ant/dist
+	installTo=../build_ant/dist
+	lianaCore.java.lib=D:/jdk_version/jdk_1.8.0.0_64/jre/lib
+	perbank.java.lib=D:/jdk_version/jdk_1.8.0.0_64/jre/lib
+	
+	newgit
+	增量包配置
+	F:\Jenkins\workspace\newgit\build\patchAllBuild.xml
+	
+	buildfile=build_sit.properties
+	rootDir=F:/Jenkins/workspace/newgit
+	
+	全量包配置
+	F:\Jenkins\workspace\newgit\build\packAllBuild.xml
+	
+	buildfile=pack_build_sit.properties
+	rootDir=F:/Jenkins/workspace/newgit
+	
+	sit_newgit
+	增量包配置
+	F:\Jenkins\workspace\sit_newgit\build\patchAllBuild.xml
+	
+	buildfile=build_sit.properties
+	rootDir=F:/Jenkins/workspace/sit_newgit
+	
+	全量包配置
+	F:\Jenkins\workspace\sit_newgit\build\packAllBuild.xml
+	
+	buildfile=pack_build_sit.properties
+	rootDir=F:/Jenkins/workspace/sit_newgit
+	
+	备份打包文件到ftp
+	F:\Jenkins\workspace\sit_newgit\build\ftp-build.xml
+	ftp.hostname=200.100.155.11
+	ftp.home=/home/webbank/data
+	ftp.username=webbank
+	ftp.password=web16880
+	ftp.prefix=sit2
+	
+	
+	<property name="ftp.hostname" value="200.100.155.11" />
+	<property name="ftp.home" value="/home/webbank/data" />
+	<property name="ftp.username" value="webbank" />
+	<property name="ftp.password" value="web16880" />
+	<property name="ftp.prefix" value="sit2" />
+	<property name="ftp.version" value="01" />
+	<property name="installTo" value="../build/dist" />
+	
+	打包文件到was
+	F:\Jenkins\workspace\sit_newgit\build\buildwasAll.xml
+	was.prefix=sit2
+	was.home.zip=/ebank/update
+	was.home=/ebank
+	was.hostname=200.100.154.56
+	was.username=op
+	was.password=Gl7730
+	was.perbank=/ebank/perbank_war.ear
+	was.corporbank=/ebank/corporbank_war.ear
+	was.innermanage=/ebank/innermanage_war.ear
+	was.taskman=/ebank/taskman_war.ear
+	washttp.home.zip=/ebank/update
+	washttp.home=/ebank
+	washttp.hostname=200.100.154.56
+	washttp.username=op
+	washttp.password=Gl7730
+	washttp.perbank=/ebank/perbank
+	washttp.corporbank=/ebank/corporbank
+	
+	
+	<property name="was.prefix" value="sit2" />
+	<property name="was.version" value="01" />
+
+	<property name="was.home.zip" value="/ebank/update" />
+	<property name="was.home" value="/ebank" />
+	<property name="was.hostname" value="200.100.154.56" />
+	<property name="was.hostport" value="8879" />
+	<property name="was.username" value="op" />
+	<property name="was.password" value="Gl7730" />
+	<property name="was.perbank" value="/ebank/perbank_war.ear" />
+	<property name="was.corporbank" value="/ebank/corporbank_war.ear" />
+	<property name="was.innermanage" value="/ebank/innermanage_war.ear" />
+	<property name="was.taskman" value="/ebank/taskman_war.ear" />
+
+	<property name="washttp.home.zip" value="/ebank/update" />
+	<property name="washttp.home" value="/ebank" />
+	<property name="washttp.hostname" value="200.100.154.56" />
+	<property name="washttp.hostport" value="8879" />
+	<property name="washttp.username" value="op" />
+	<property name="washttp.password" value="Gl7730" />
+	<property name="washttp.perbank" value="/ebank/perbank" />
+	<property name="washttp.corporbank" value="/ebank/corporbank" />
+	
+	
+	perbank-20190421.war
+	innermanage-20190421.war
+	
+	\\Client\F$\Jenkins\workspace\sit_newgit\build\dist
+	
+	perbank-20190425.war
+	
+	
+	F:\glbank_tool\apache-ant-1.10.5\buildgit.xml
+	srcDir=F:/Jenkins/workspace/newgit
+srcUrl=http://200.100.62.47/new_corebank/04-Code/04-Outer-Systems/11-wangyin.git
+branch=master
+username=yuxin_lucy
+password=lu450322
+	
+	env.ANT_HOME=F:\glbank_tool\apache-ant-1.10.5
+	username=yuxin_lucy
+	password=lu450322
+	srcUrl="http://200.100.62.47/new_corebank/04-Code/04-Outer-Systems/11-wangyin.git
+	branch=master
+	srcDir=F:/gittest/test2
+	
+	<property name="app.home" value="/opt/IBM/WebSphere/AppServer/profiles/Node02" />
+	<property name="perbank.server" value="perbank" />
+	<property name="corporbank.server" value="corporbank" />
+	<property name="innermanage.server" value="innermanange" />
+	<property name="taskman.server" value="taskman" />
+	
+	#节点和应用服务启动路径
+	app.home=/opt/IBM/WebSphere/AppServer/profiles/Node02
+	#perbank服务名称
+	perbank.server=perbank
+	#perbank服务名称
+	corporbank.server=corporbank
+	#perbank服务名称
+	innermanange.server=innermanange
+	#perbank服务名称
+	taskman.server=taskman
+	
+	
+	55
+	
+	          export ANT_HOME=/var/lib/apache-ant-1.10.5
+          export PATH=$PATH:$ANT_HOME/bin
+	
+	srcDir=/var/lib/jenkins/workspace/master_newcore
+srcUrl=http://200.100.62.47/new_corebank/04-Code/04-Outer-Systems/11-wangyin.git
+branch=master
+username=yuxin_lucy
+password=lu450322
+env.ANT_HOME=/var/lib/apache-ant-1.10.5
+
+project.patch.location=/var/lib/jenkins/workspace/master_newcore/build/dist
+	installTo=/var/lib/jenkins/workspace/master_newcore/build/dist
+	lianaCore.java.lib=/usr/java/jdk1.8.0_211-amd64/
+	perbank.java.lib=/usr/java/jdk1.8.0_211-amd64/
+
+/var/lib/jenkins/workspace/master_newcore/build/patchAllBuild.xml
+	buildfile=build_sit.properties
+	rootDir=/var/lib/jenkins/workspace/master_newcore
+	
+	https://www.cnblogs.com/zhang55qwe/p/6147024.html
+	windows+ant+git+tomcat中ant直接获取git项目部署注意点
+	
+	http://wiki.eclipse.org/JGit/User_Guide#Ant_Tasks
+	JGit具有针对org.eclipse.jgit.ant包中包含的一些常见任务的Ant任务。
+	
+#电票环境	
+	/jenkinsWorkSpaces/jenkins/workspace/master_newcore/build/buildwasSpecial.xml
+	
+	#部署环境前缀
+was.prefix=sit3
+#动态环境配置
+was.home=/ebank
+was.hostname=200.100.154.56
+was.username=op
+was.password=Gl7730
+#上传动态包路径
+was.home.zip=/ebank/update
+#perbank动态包安装路径
+was.perbank=/ebank/perbank_war.ear
+#corporbank动态包安装路径
+was.corporbank=/ebank/corporbank_war.ear
+#innermanage动态包安装路径
+was.innermanage=/ebank/innermanage_war.ear
+#taskman动态包安装路径
+was.taskman=/ebank/taskman_war.ear
+#静态环境配置
+washttp.home=/ebank
+washttp.hostname=200.100.154.52
+washttp.username=op
+washttp.password=Gl7730
+#上传静态包路径
+washttp.home.zip=/ebank/update
+#perbank静态安装路径
+washttp.perbank=/ebank/perbank
+#corporbank静态安装路径
+washttp.corporbank=/ebank/corporbank_ebills
+#企业静态包文件夹
+corporbank.dir=corporbank_ebill
+	
